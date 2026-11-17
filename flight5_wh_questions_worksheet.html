@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight 5: WH- Questions in Aviation - Picken-Glish Aviation</title>
+<style>
+  :root {
+    --bg: #0b132b;
+    --card: #1c2541;
+    --border: #3a506b;
+    --accent: #00f5d4;
+    --accent-alt: #fca311;
+    --text: #f8f9fa;
+    --muted: #adb5bd;
+    --correct: #2ec4b6;
+    --wrong: #e63946;
+  }
+  * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  header {
+    background: linear-gradient(135deg, #1c2541, #0b132b);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 8px 0;
+    color: var(--accent);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  header p {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--muted);
+  }
+  .student-info {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .student-info input {
+    background: #0b132b;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    width: 260px;
+  }
+  .section {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+  .section h2 {
+    margin-top: 0;
+    color: var(--accent-alt);
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .instructions {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .question-item {
+    background: rgba(11, 19, 43, 0.6);
+    border-left: 4px solid var(--border);
+    padding: 15px 18px;
+    margin-bottom: 15px;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.15rem;
+    transition: border-color 0.3s;
+  }
+  .question-item.correct-box { border-left-color: var(--correct); }
+  .question-item.wrong-box { border-left-color: var(--wrong); }
+  select, input[type="text"] {
+    background-color: #0b132b;
+    color: var(--accent);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0 5px;
+  }
+  select:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .vocab-grid { grid-template-columns: 1fr; }
+  }
+  .vocab-column h3 {
+    color: var(--accent);
+    margin-top: 0;
+    font-size: 1.3rem;
+  }
+  .word-bank {
+    background: #0b132b;
+    border: 1px dashed var(--accent);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .feedback {
+    display: block;
+    margin-top: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .feedback.ok { color: var(--correct); }
+  .feedback.err { color: var(--wrong); }
+  .controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 14px 28px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  button:hover { opacity: 0.9; }
+  button:active { transform: scale(0.98); }
+  .btn-check { background-color: var(--accent); color: #0b132b; }
+  .btn-reset { background-color: var(--border); color: var(--text); }
+  #score-banner {
+    display: none;
+    background: #0b132b;
+    border: 2px solid var(--accent-alt);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-alt);
+    margin-bottom: 30px;
+  }
+  .dialogue-box {
+    background: #0b132b;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  .speaker {
+    font-weight: bold;
+    color: var(--accent-alt);
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Picken-Glish Aviation &bull; Flight 5 Worksheet</h1>
+    <p>WH- Questions in Aviation (Who, Where, When, What, Why) &amp; Key Prepositions (At, On, In)</p>
+    <div class="student-info">
+      <input type="text" placeholder="Callsign / Student Name">
+      <input type="text" placeholder="Role (Pilot / Cabin Crew / Ground)">
+      <input type="text" placeholder="Date">
+    </div>
+  </header>
+
+  <div id="score-banner"></div>
+
+  <!-- SECTION 1: WH- QUESTIONS CHOICE -->
+  <div class="section">
+    <h2>Part 1: Essential WH- Questions in Aviation</h2>
+    <p class="instructions">Select the correct WH- question word (<strong>Who, Where, When, What, Why</strong>) based on the professional response.</p>
+
+    <div class="question-item" data-answer="Who" data-exp="Use 'Who' for crew, personnel, and airport roles ('Captain Peterson').">
+      1. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is responsible for Flight 5? &rarr; <em>"Captain Peterson is."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="Where" data-exp="Use 'Where' for spatial locations on the airfield or inside the aircraft ('on Taxiway Bravo').">
+      2. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is Flight 5 right now? &rarr; <em>"It is on Taxiway Bravo."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="When" data-exp="Use 'When' for schedules, departure/arrival times, and boarding times ('at 14:30 UTC').">
+      3. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is the boarding time for Flight 5? &rarr; <em>"It is at 14:30 UTC."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="Why" data-exp="Use 'Why' to ask about reasons, delays, or technical causes ('Because of bad weather').">
+      4. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is Flight 5 delayed? &rarr; <em>"Because of bad weather in London."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="What" data-exp="Use 'What' to ask about specific objects, documents, seat numbers, or weather conditions.">
+      5. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is your seat number and do you have your boarding pass? &rarr; <em>"Seat 14A, here it is."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="What" data-exp="Use 'What' to request weather reports ('What is the weather like?').">
+      6. 
+      <select class="q-input">
+        <option value="">-- choose --</option>
+        <option value="Who">Who</option>
+        <option value="Where">Where</option>
+        <option value="When">When</option>
+        <option value="What">What</option>
+        <option value="Why">Why</option>
+      </select>
+      is the weather like on route? &rarr; <em>"It is foggy and rainy with light turbulence."</em>
+      <span class="feedback"></span>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PREPOSITIONS (AT, ON, IN) & ACTION VERBS -->
+  <div class="section">
+    <h2>Part 2: Key Prepositions (At, On, In) &amp; Action Verbs</h2>
+    <p class="instructions">Complete each aviation sentence with the correct preposition (<strong>at, on, in</strong>) or action verb (<strong>take off, land, board</strong>).</p>
+
+    <div class="question-item" data-answer="at" data-exp="Use 'at' for exact points or gates ('at Gate 5').">
+      1. Passengers for Flight 5 are waiting <select class="q-input"><option value="">--</option><option value="at">at</option><option value="on">on</option><option value="in">in</option></select> Gate 5.
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="on" data-exp="Use 'on' for surfaces, runways, and taxiways ('on Runway 09').">
+      2. Flight 5 is holding short <select class="q-input"><option value="">--</option><option value="at">at</option><option value="on">on</option><option value="in">in</option></select> Taxiway Alpha before entering Runway 09.
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="in" data-exp="Use 'in' for enclosed spaces ('in the cabin', 'in the cockpit').">
+      3. All carry-on luggage must be stored safely <select class="q-input"><option value="">--</option><option value="at">at</option><option value="on">on</option><option value="in">in</option></select> the cabin.
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="take off" data-exp="'Take off' is the action verb for departure from the runway.">
+      4. Tower, when does the plane <select class="q-input"><option value="">--</option><option value="take off">take off</option><option value="land">land</option><option value="board">board</option></select>? &rarr; <em>"In 3 minutes."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="board" data-exp="'Board' means to enter the aircraft.">
+      5. Who is ready to <select class="q-input"><option value="">--</option><option value="take off">take off</option><option value="land">land</option><option value="board">board</option></select> the aircraft? &rarr; <em>"Priority passengers are ready."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="land" data-exp="'Land' is the action of touching down at the destination.">
+      6. Where will Flight 5 <select class="q-input"><option value="">--</option><option value="take off">take off</option><option value="land">land</option><option value="board">board</option></select>? &rarr; <em>"On Runway 27 at Heathrow."</em>
+      <span class="feedback"></span>
+    </div>
+  </div>
+
+  <!-- SECTION 3: VOCABULARY MATCHING -->
+  <div class="section">
+    <h2>Part 3: Flight 5 Vocabulary Check</h2>
+    <p class="instructions">Match the aviation terms from Flight 5 to their correct definitions.</p>
+
+    <div class="vocab-grid">
+      <!-- COLUMN 1: PERSONNEL & INFRASTRUCTURE -->
+      <div class="vocab-column">
+        <h3>Personnel &amp; Airport Areas</h3>
+        <div class="word-bank">
+          Word Bank: Captain &bull; Flight Attendant &bull; Air Traffic Controller &bull; Runway &bull; Taxiway &bull; Cockpit
+        </div>
+
+        <div class="question-item" data-answer="Captain" data-exp="The pilot in command of the aircraft.">
+          1. The commander in charge of the aircraft:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Flight Attendant" data-exp="Cabin crew member focused on passenger safety.">
+          2. Cabin crew member focused on safety and service:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Air Traffic Controller" data-exp="Manages aircraft traffic from the control tower.">
+          3. Specialist who controls traffic from the tower:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Runway" data-exp="Dedicated strip for takeoffs and landings.">
+          4. Dedicated strip for takeoffs and landings:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Taxiway" data-exp="Path connecting the terminal to the main runway.">
+          5. Path connecting the terminal to the main runway:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Cockpit" data-exp="The flight deck / command section of the airplane.">
+          6. The command section where pilots fly the plane:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Captain">Captain</option>
+            <option value="Flight Attendant">Flight Attendant</option>
+            <option value="Air Traffic Controller">Air Traffic Controller</option>
+            <option value="Runway">Runway</option>
+            <option value="Taxiway">Taxiway</option>
+            <option value="Cockpit">Cockpit</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: DOCUMENTS, WEATHER & DELAYS -->
+      <div class="vocab-column">
+        <h3>Operations, Weather &amp; Delays</h3>
+        <div class="word-bank">
+          Word Bank: Boarding Pass &bull; Carry-on bag &bull; Foggy &bull; Turbulence &bull; Technical problem &bull; Fueling
+        </div>
+
+        <div class="question-item" data-answer="Boarding Pass" data-exp="Document allowing a passenger to enter the aircraft.">
+          1. Document required to board the aircraft:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Carry-on bag" data-exp="Small luggage taken inside the passenger cabin.">
+          2. Small luggage allowed inside the cabin:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Foggy" data-exp="Low visibility weather condition caused by thick mist/fog.">
+          3. Weather condition with dense mist and low visibility:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Turbulence" data-exp="Unsteady air movement causing the aircraft to shake.">
+          4. Irregular air motion shaking the aircraft in flight:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Technical problem" data-exp="Minor maintenance fault causing a delay.">
+          5. Maintenance issue delaying departure:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+
+        <div class="question-item" data-answer="Fueling" data-exp="Process of loading fuel into the aircraft tanks.">
+          6. Loading aviation fuel before departure:
+          <select class="q-input">
+            <option value="">-- select --</option>
+            <option value="Boarding Pass">Boarding Pass</option>
+            <option value="Carry-on bag">Carry-on bag</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Turbulence">Turbulence</option>
+            <option value="Technical problem">Technical problem</option>
+            <option value="Fueling">Fueling</option>
+          </select>
+          <span class="feedback"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: ATC - PILOT CONVERSATION SIMULATOR -->
+  <div class="section">
+    <h2>Part 4: ATC &ndash; Pilot Conversation Simulator</h2>
+    <p class="instructions">Type the missing WH- question word (<strong>What, Where, Why, When</strong>) to complete the radio communication.</p>
+
+    <div class="question-item" data-answer="What" data-exp="'What is your current position?' asks for status/location details.">
+      <div class="speaker">ATC (Control Tower):</div>
+      <input type="text" class="q-input" placeholder="WH- word..." style="width: 140px;"> is your current position, Flight 5?<br>
+      <div class="speaker" style="margin-top:8px;">PILOT (Cockpit):</div>
+      <em>"Flight 5 is on Taxiway Alpha, ready for departure."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="Where" data-exp="'Where is our designated landing gate?' asks for a specific location.">
+      <div class="speaker">PILOT (Cockpit):</div>
+      <input type="text" class="q-input" placeholder="WH- word..." style="width: 140px;"> is our designated landing gate?<br>
+      <div class="speaker" style="margin-top:8px;">ATC (Control Tower):</div>
+      <em>"Flight 5, your designated gate is Gate 12."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="Why" data-exp="'Why are you requesting a hold?' asks for the reason.">
+      <div class="speaker">ATC (Control Tower):</div>
+      <input type="text" class="q-input" placeholder="WH- word..." style="width: 140px;"> are you requesting a hold?<br>
+      <div class="speaker" style="margin-top:8px;">PILOT (Cockpit):</div>
+      <em>"Because of light turbulence and foggy conditions on approach."</em>
+      <span class="feedback"></span>
+    </div>
+
+    <div class="question-item" data-answer="When" data-exp="'When can we expect clearance...?' asks for time.">
+      <div class="speaker">PILOT (Cockpit):</div>
+      <input type="text" class="q-input" placeholder="WH- word..." style="width: 140px;"> can we expect clearance for takeoff?<br>
+      <div class="speaker" style="margin-top:8px;">ATC (Control Tower):</div>
+      <em>"Expect clearance in 3 minutes, after the landing aircraft."</em>
+      <span class="feedback"></span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-check" onclick="gradeWorksheet()">Check Answers</button>
+    <button class="btn-reset" onclick="resetWorksheet()">Reset Worksheet</button>
+  </div>
+</div>
+
+<script>
+function gradeWorksheet() {
+  const items = document.querySelectorAll('.question-item');
+  let score = 0;
+  let total = items.length;
+
+  items.forEach(item => {
+    const input = item.querySelector('.q-input');
+    const feedback = item.querySelector('.feedback');
+    const correctAns = item.getAttribute('data-answer').trim().toLowerCase();
+    const explanation = item.getAttribute('data-exp');
+    const userAns = input.value.trim().toLowerCase();
+
+    item.classList.remove('correct-box', 'wrong-box');
+
+    if (userAns === correctAns) {
+      score++;
+      item.classList.add('correct-box');
+      feedback.className = 'feedback ok';
+      feedback.textContent = '✓ Correct! ' + explanation;
+    } else {
+      item.classList.add('wrong-box');
+      feedback.className = 'feedback err';
+      feedback.textContent = '✗ Correct answer: "' + item.getAttribute('data-answer') + '" — ' + explanation;
+    }
+  });
+
+  const banner = document.getElementById('score-banner');
+  const pct = Math.round((score / total) * 100);
+  banner.style.display = 'block';
+  banner.textContent = `Score: ${score} / ${total} (${pct}%) — ${pct >= 80 ? 'Flight 5 Completed! Ready for Takeoff!' : 'Review the feedback below and try again.'}`;
+  banner.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetWorksheet() {
+  const items = document.querySelectorAll('.question-item');
+  items.forEach(item => {
+    const input = item.querySelector('.q-input');
+    const feedback = item.querySelector('.feedback');
+    input.value = '';
+    feedback.textContent = '';
+    item.classList.remove('correct-box', 'wrong-box');
+  });
+  document.getElementById('score-banner').style.display = 'none';
+}
+</script>
+</body>
+</html>
